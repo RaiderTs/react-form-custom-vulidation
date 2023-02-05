@@ -1,14 +1,15 @@
 import { useRef, useState, useEffect } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { useLocalStorage } from '../hooks/useLocalStorage';
 import { useInput } from '../hooks/useInput';
+import { useToggle } from '../hooks/useToggle';
 
 import axios from '../api/axios';
 const LOGIN_URL = '/auth';
 
 export const Login = () => {
-  const { setAuth, persist, setPersist } = useAuth();
+  // const { setAuth, persist, setPersist } = useAuth();
+  const { setAuth } = useAuth();
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -21,6 +22,7 @@ export const Login = () => {
   const [user, resetUser, userAttribs] = useInput('user', '');
   const [pwd, setPwd] = useState('');
   const [errMsg, setErrMsg] = useState('');
+  const [check, toggleCheck] = useToggle('persist', false);
 
   useEffect(() => {
     userRef.current.focus();
@@ -66,13 +68,13 @@ export const Login = () => {
     }
   };
 
-  const togglePersist = () => {
-    setPersist((prev) => !prev);
-  };
+  // const togglePersist = () => {
+  //   setPersist((prev) => !prev);
+  // };
 
-  useEffect(() => {
-    localStorage.setItem('persist', persist);
-  }, [persist]);
+  // useEffect(() => {
+  //   localStorage.setItem('persist', persist);
+  // }, [persist]);
 
   return (
     <section>
@@ -109,8 +111,8 @@ export const Login = () => {
           <input
             type='checkbox'
             id='persist'
-            onChange={togglePersist}
-            checked={persist}
+            onChange={toggleCheck}
+            checked={check}
           />
           <label htmlFor='persist'>Trust This Device</label>
         </div>
